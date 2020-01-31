@@ -10,10 +10,6 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: Docker@2
-  inputs:
-    command: 'build'
-    Dockerfile: '**/Dockerfile'
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'
@@ -22,3 +18,12 @@ steps:
 - script: |
     npm install
   displayName: 'npm install'
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Free Trial (6e125e22-ac27-4b9c-a6e3-8451b1dc91fd)'
+    appType: 'webAppLinux'
+    WebAppName: 'nodeapptestwalid'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/'
+    RuntimeStack: 'NODE|12-lts'
+    StartupCommand: 'npm run start'
